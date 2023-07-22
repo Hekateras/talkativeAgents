@@ -1,3 +1,6 @@
 name = Talkative Agents
-author = Mobbstar
-version = 1.0
+
+icon = gui/icons/mod_dlc_banter_icon.png
+
+author = Mobbstar, Shirsh, Cyberboy2000, Hekateras, Linenpixel
+version = 4.0
