@@ -1285,28 +1285,6 @@ local DLC_STRINGS =
 		},
 	},
 
-	HOSTAGEQUIPS = {
-
-		[_M.DRACO] = {"The night, honed into deadly purpose.","Your saviour.","A shadow. Follow me... into the darkness."},
-		[_M.SHALEM] = {"I could tell you, but then I'd have to kill you.","Lucky for you, a professional."},
-		[_M.RUSH] = {"The answer to your prayers.","Less talking, more running.","Looks like you're out of shape. Ugh, this is gonna suck."},
-		[_M.DEREK] = {"Don't look at me, I'm just here for the sweet, sweet cash.",},
-		[_M.OLIVIA] = {"No time to explain. Follow my lead."},
-		[_M.INTERNATIONALE] = {"We're here to help. Let's get you out of here."},
-		[_M.BANKS] = {"Come to cut the knots.","Ye can trust me, I'm a thief."},
-		[_M.NIKA] = {"Quiet. Come with me.","...","You will listen to me if you want to get out alive."},
-		[_M.CENTRAL] = {"Right now, we're your best and only chance.","It's best for you if you don't find out.","That's classified."},
-		[_M.MONSTER] = {"Come with me if you want to live, is how I believe the saying goes...","Good question. By all rights, I shouldn't even be here!","Do look me up later if you're looking for new employment."},
-		[_M.SHARP] = {"This sack of pus isn't worth my time.","Silence, human."},
-		[_M.DECKER] = {"Well, pal, we'd be the cavalry.","Keep it quiet, and I'll buy you a drink later.","Can't tell you. Follow me, and keep that yapper shut."},
-		[_M.TONY] = {"Who is anyone, really?","A fascinating question. Let's table it for later."},
-		[_M.PRISM] = {"Right now, we're the good guys.","Just a security guard. \n\nI'm kiding. Let's go.","Really? You don't recognise me?"},
-		[_M.GOOSE] = {" < HONK. > "," < HONK HONK HONK! > ",},
-		[_M.CARMEN] = {"I've come to get you out of here!","Take it easy. You can call me Red.","Some call me the Scarlet Shadow, but that's a bit of a mouthful. Coming?","Scarlet Shadow. Crimson Thief. Carmen Sandiego. Take your pick, friend."},
-		[_M.CONWAY] = {"Opening conveniently flimsy cuffs is my specialty.","I'm just a guy with a pair of pants.","You want my card?"},
-
-	},
-
 	AGENT_ONELINERS = {
 -------------------	
 	-- Decker
@@ -1339,6 +1317,7 @@ local DLC_STRINGS =
 		[T_EVENT.CLOAK_IN] =			{T_PROB.p_cloak,{"Running silent.","In the old days, they'd have burned me as a witch.","Right into thin air.","Whoosh..","And gone.","This thing's more useful than most of the people I work with."}},
 		[T_EVENT.MEDGEL] =			{T_PROB.p_medgel,{"Typical, really.","Think you can pack it this time?","< Sigh >","Quiet. Job ain't over.","Heads up, we're still on the clock.","Don't mention it.","You need to pick up the slack."}},
 		[T_EVENT.WAKE_OTHER] =		nil,
+		[T_EVENT.UNTIE] = 			{T_PROB.p_hostage_rescue, {"Well, pal, we'd be the cavalry.","Keep it quiet, and I'll buy you a drink later.","Can't tell you. Follow me, and keep that yapper shut."}},
 
 		[T_EVENT.PARALYZER] =		nil,
 		[T_EVENT.STIM_SELF] =		nil,
@@ -1385,6 +1364,8 @@ local DLC_STRINGS =
 		[T_EVENT.CLOAK_IN] =			{T_PROB.p_cloak,{"Too bad this won't last for long.","That's some incredible tech.","I could get used to this.","The tricky part is not tripping over yourself.","It's a shame I didn't have this years ago.","You know, Clark's third law states that... Alright, maybe now is not the time.","And for my next trick..."}},
 		[T_EVENT.MEDGEL] =			{T_PROB.p_medgel,{"Good as new.","Are you alright?","Quiet! We're still in the field.","Welcome back.","So how was the light at the end of the tunnel?"}},
 		[T_EVENT.WAKE_OTHER] =		nil,
+		[T_EVENT.UNTIE] = 			{T_PROB.p_hostage_rescue, {"Who is anyone, really?","A fascinating question. Let's table it for later."}},
+
 
 		[T_EVENT.PARALYZER] =		nil,
 		[T_EVENT.STIM_SELF] =		{0.5,{"This better not become a habit.","Whatever gives us the edge on them."}},
@@ -1434,6 +1415,7 @@ local DLC_STRINGS =
 		[T_EVENT.CLOAK_IN] =			{T_PROB.p_cloak,{"Hidden.","Seems a bit like cheating, doesn't it?","Cloaked.","Better not get too used to this."}},
 		[T_EVENT.MEDGEL] =			{T_PROB.p_medgel,{"Try to stay on your feet this time.","Eyes sharp now.","We're not done here yet.","By all means, take your time...","Don't take it personally.","Get up. We need to move."}},
 		[T_EVENT.WAKE_OTHER] =			nil,
+		[T_EVENT.UNTIE] = 			{T_PROB.p_hostage_rescue, {"I could tell you, but then I'd have to kill you.","Lucky for you, a professional."}},
 
 		[T_EVENT.PARALYZER] =		nil,
 		[T_EVENT.STIM_SELF] =		nil,
@@ -1481,6 +1463,7 @@ local DLC_STRINGS =
 		[T_EVENT.CLOAK_IN] =			{T_PROB.p_cloak,{"Invisible, intangible, I have become air.","Into nothing I return.","Light as a feather, I am.","...Am I a ghost?","I can't see my- Oh. I forgot.","A puca now roams these halls.","I vanish."}},
 		[T_EVENT.MEDGEL] =			{T_PROB.p_medgel,{"Shh. Just let them sew you up.","Easy there, buddy.","Ya grand?","Now then, that's a lot of blood.","I'm sure ya'll be fine!","Ya'd do the same for me, right?","Don't worry, I've got ya.","D'ya have pain in ya at all?","Don't worry. The achin' is how ya know it worked."}},
 		[T_EVENT.WAKE_OTHER] =				nil,
+		[T_EVENT.UNTIE] = 			{T_PROB.p_hostage_rescue, {"Come to cut the knots.","Ye can trust me, I'm a thief."}},
 
 		[T_EVENT.PARALYZER] =		{1,{"Sleep well.","Shhhh.","Don't worry, ya'll miss all the bad parts.","Ya won't remember this at all.","No one has to get hurt.","Safest place for ya to be is nowhere at all."}},
 		[T_EVENT.STIM_SELF] =		{0.5,{"This should help.","Already feeling things clear up...","Wow, I can focus! That's grand!","Is this what being normal feels like?","It's like the fog in my head just... poofed.","Ok, ok, so what do I do next?"}},
@@ -1530,6 +1513,7 @@ local DLC_STRINGS =
 		[T_EVENT.CLOAK_IN] =			{T_PROB.p_cloak,{"Time for stealth.","The subtle approach.","I can see why Brian likes this trick so much","Cloaked and ready.","Cloak active."}},
 		[T_EVENT.MEDGEL] =			{T_PROB.p_medgel,{"Take it easy.","Easy now.","Next time, be careful.","All good?","It'll be okay.","Let's get you out of here","We don't have time. Can you walk?","We're not safe yet. Focus.","Don't worry, they'll pay for this.","You okay? You just need to make it to the exit."}},
 		[T_EVENT.WAKE_OTHER] =		nil,
+		[T_EVENT.UNTIE] = 			{T_PROB.p_hostage_rescue, {"We're here to help. Let's get you out of here."}},
 
 		[T_EVENT.PARALYZER] =		nil,
 		[T_EVENT.STIM_SELF] =		nil,
@@ -1578,6 +1562,7 @@ local DLC_STRINGS =
 		[T_EVENT.CLOAK_IN] =			{T_PROB.p_cloak,{"...","I am cloaked.","Concealment active.","Very well. If it is stealth you need."}},
 		[T_EVENT.MEDGEL] =			{T_PROB.p_medgel,{"Get up.","Ne za shto.","...","...Good?","Move.","You're awake. Good.","Stay behind me.","...\nStay close to me if you cannot handle yourself.","We have work to do. Don't slow me down again.","You need to be better."}},
 		[T_EVENT.WAKE_OTHER] =		nil,
+		[T_EVENT.UNTIE] = 			{T_PROB.p_hostage_rescue, {"Quiet. Come with me.","...","You will listen to me if you want to get out alive."}},
 
 		[T_EVENT.PARALYZER] =		nil,
 		[T_EVENT.STIM_SELF] =		nil,
@@ -1624,6 +1609,7 @@ local DLC_STRINGS =
 		[T_EVENT.CLOAK_IN] =			{T_PROB.p_cloak,{"Not certain if I like this.","...Still more attractive than anyone here.","I prefer my enemies to look me in the face before I obliterate them.","Undetectable. Yet another on my long list of traits.","This hardly seems necessary."}},
 		[T_EVENT.MEDGEL] =			{T_PROB.p_medgel,{"Pathetic.","Don't get your juices on me, meatbag.","That only delayed the inevitable, you know.","You're up? Good, because I refuse to drag you.","See? That was me, being a good teammate.","I just saved your life, you worthless sack of juice.","There. Try not to fall over yourself with gratitude.","You can thank me later. Cash is best."}},
 		[T_EVENT.WAKE_OTHER] =		nil,
+		[T_EVENT.UNTIE] = 			{T_PROB.p_hostage_rescue, {"This sack of pus isn't worth my time.","Silence, human."}},
 
 		[T_EVENT.PARALYZER] =		nil,
 		[T_EVENT.STIM_SELF] =		nil,
@@ -1670,6 +1656,7 @@ local DLC_STRINGS =
 		[T_EVENT.CLOAK_IN] =			{T_PROB.p_cloak,{"Out of sight, out of mind.","Bit of a strange feeling, this.","I do not need this to blend in.","Putting the \"invisible\" in... well, you know.","Just like magic, but better."}},
 		[T_EVENT.MEDGEL] =			{T_PROB.p_medgel,{"Let's get moving.","You good? Okay, let's go.","Can't laze around forever, you know.","We haven't got all day.","Try not to collapse till we're in the clear.","I worked hard on my hair. Don't get your blood on it.","Oh good, you're still alive.","You're welcome.","You wanna get out of here or what?","Let's not stick around."}},
 		[T_EVENT.WAKE_OTHER] =		nil,
+		[T_EVENT.UNTIE] = 			{T_PROB.p_hostage_rescue, {"Right now, we're the good guys.","Just a security guard. \n\nI'm kiding. Let's go.","Really? You don't recognise me?"}},
 
 		[T_EVENT.PARALYZER] =		nil,
 		[T_EVENT.STIM_SELF] =		nil,
@@ -1717,6 +1704,7 @@ local DLC_STRINGS =
 		[T_EVENT.CLOAK_IN] =			{T_PROB.p_cloak,{"Can't see me now, can you?","Cloak in."}},
 		[T_EVENT.MEDGEL] =			{T_PROB.p_medgel,{"Enough dilly-dallying.","Look sharp, we're still in enemy territory.","That was a close recovery.","You should be fine for now.","Do try not to get shot next time.","Don't be so sloppy."}},
 		[T_EVENT.WAKE_OTHER] =		nil,
+		[T_EVENT.UNTIE] = 			{T_PROB.p_hostage_rescue, {"No time to explain. Follow my lead."}},
 
 		[T_EVENT.PARALYZER] =		nil,
 		[T_EVENT.STIM_SELF] =		nil,
@@ -1764,6 +1752,7 @@ local DLC_STRINGS =
 		[T_EVENT.CLOAK_IN] =			{T_PROB.p_cloak,{"This is more my style.","I'm sure I could tweak this to work longer.","Now that's some toy.","I like this."}},
 		[T_EVENT.MEDGEL] =			{T_PROB.p_medgel,{"You are quite fortunate to have modern medicine on your side.","There you go, friend.","Can you walk? Marvelous.","Don't worry, the stinging is how you know it's working.","Come on, I'll help you up.","Friends don't let friends bleed out on the ground, remember.","Stick to the buddy rule next time.","You'll have to make that up to me.","Let's move along now.","Good. Saves me the bother of dragging you."}},
 		[T_EVENT.WAKE_OTHER] =		nil,
+		[T_EVENT.UNTIE] = 			{T_PROB.p_hostage_rescue, {"Don't look at me, I'm just here for the sweet, sweet cash.",}},
 
 		[T_EVENT.PARALYZER] =		nil,
 		[T_EVENT.STIM_SELF] =		nil,
@@ -1810,6 +1799,7 @@ local DLC_STRINGS =
 		[T_EVENT.CLOAK_IN] =			{T_PROB.p_cloak,{"Into the shadows.","With a light step.","Now you see me... now you don't.","You saw nothing.","Fading into darkness.","They won't see me coming.","Striking from the shadows.","A deadly apparition."}},
 		[T_EVENT.MEDGEL] =			{T_PROB.p_medgel,{"Rise and shine!","Awaken.","I command you: Rise.","This shall knit your flesh together.","Next time, do not let them catch you."}},
 		[T_EVENT.WAKE_OTHER] =		nil,
+		[T_EVENT.UNTIE] = 			{T_PROB.p_hostage_rescue, {"The night, honed into deadly purpose.","Your saviour.","A shadow. Follow me... into the darkness."}},
 
 		[T_EVENT.PARALYZER] =		{1,{"A paralyzing bite!","Your slumber deepens."}},
 		[T_EVENT.STIM_SELF] =		nil,
@@ -1858,6 +1848,7 @@ local DLC_STRINGS =
 		[T_EVENT.CLOAK_IN] =			{T_PROB.p_cloak,{"So, uh... what now?","Cloak and dagger isn't really my style.","Can I do something useful for a change?","Cloak active. For whatever that's worth","Whoo! Pretty fun.","Time to be super duper quiet."}},
 		[T_EVENT.MEDGEL] =			{T_PROB.p_medgel,{"Next time, I just leave you behind.","See? I can do teamwork!","I don't have time to babysit.","Hurts, huh? Suck it up and let's go.","You up? Good. Get a move on.","This? This is slowing me down.","Clock's ticking.","You're less of a dead weight now.","Walk it off.","Sheesh.","< Eyeroll >","Look on the bright side: Scars are in fashion."}},
 		[T_EVENT.WAKE_OTHER] =			{1,{"Stand up!","I was just about to kick you."}}, -- sorry had no better ideas
+		[T_EVENT.UNTIE] = 			{T_PROB.p_hostage_rescue, {"The answer to your prayers.","Less talking, more running.","Looks like you're out of shape. Ugh, this is gonna suck."}},
 
 		[T_EVENT.PARALYZER] =		nil,
 		[T_EVENT.STIM_SELF] =		{1,{"A little overclock can't hurt.","Zing. Where to?","GAME ON.","Not as much of a rush as it used to be.","Whoo! Yeah! Let's do this!","READY SET GO.","So much for trying to shake that habit."}},
@@ -1904,6 +1895,7 @@ local DLC_STRINGS =
 		[T_EVENT.CLOAK_IN] =			{T_PROB.p_cloak,{"I do love these new toys.","This is incredibly satisfying.","This should give them the slip.","It is time to... disappear.","Whoosh. Ahem, that ought to do it.","More my style."}},
 		[T_EVENT.MEDGEL] =			{T_PROB.p_medgel,{"Oh, good. I wasn't looking forward to having to drag you around.","Do be more careful next time.","You're welcome. I'll be sending you the reimbursement bill later.","Someone has to pull their weight around here. Might as well be me.","Gladstone's always excelled at risking her live assets. You're spared that fate, for now.","You know she still considers you expendable, right?"}},
 		[T_EVENT.WAKE_OTHER] =		nil,
+		[T_EVENT.UNTIE] = 			{T_PROB.p_hostage_rescue, {"Come with me if you want to live, is how I believe the saying goes...","Good question. By all rights, I shouldn't even be here!","Do look me up later if you're looking for new employment."}},
 
 		[T_EVENT.PARALYZER] =		nil,
 		[T_EVENT.STIM_SELF] =		nil,
@@ -1955,6 +1947,7 @@ local DLC_STRINGS =
 		[T_EVENT.CLOAK_IN] =			{T_PROB.p_cloak,{"Such a rare and useful bit of tech.","Cloak engaged."}},
 		[T_EVENT.MEDGEL] =			{T_PROB.p_medgel,{"Back on your feet, agent.","I need you on your feet. There we go.","Pay more attention next time.","Keep your head down. I'll get you out of here, I promise.","Don't thank me yet. If they capture you, you're going to wish I'd let you bleed out."}},
 		[T_EVENT.WAKE_OTHER] =		nil,
+		[T_EVENT.UNTIE] = 			{T_PROB.p_hostage_rescue, {"Right now, we're your best and only chance.","It's best for you if you don't find out.","That's classified."}},
 
 		[T_EVENT.PARALYZER] =		nil,
 		[T_EVENT.STIM_SELF] =		nil,
@@ -2185,6 +2178,7 @@ local DLC_STRINGS =
 		[T_EVENT.CLOAK_IN] =			{T_PROB.p_cloak,{"They won't see me like this.","Time for a bit more subtlety.","I guess the public appearance will have to wait.",}},
 		[T_EVENT.MEDGEL] =			{T_PROB.p_medgel,{"You alright?","It's okay, I've got you.","We need to get you out of here...","Take it easy, now.","You got shot. But you're all better now.","You're disoriented. Stay calm and follow my lead.",}},
 		[T_EVENT.WAKE_OTHER] =		nil,
+		[T_EVENT.UNTIE] = 			{T_PROB.p_hostage_rescue, {"I've come to get you out of here!","Take it easy. You can call me Red.","Some call me the Scarlet Shadow, but that's a bit of a mouthful. Coming?","Scarlet Shadow. Crimson Thief. Carmen Sandiego. Take your pick, friend."}},
 
 		[T_EVENT.PARALYZER] =		nil,
 		[T_EVENT.STIM_SELF] =		nil,
@@ -2230,6 +2224,7 @@ local DLC_STRINGS =
 		[T_EVENT.CLOAK_IN] =			{T_PROB.p_cloak,{"..."," < (honk) > "}},
 		[T_EVENT.MEDGEL] =			{T_PROB.p_medgel,{" < HONK! HONK HONK! > ", " -flap flap- ", " < HOOOONK! > -flap- ",}},
 		[T_EVENT.WAKE_OTHER] =		nil,
+		[T_EVENT.UNTIE] = 			{T_PROB.p_hostage_rescue, {" < HONK. > "," < HONK HONK HONK! > ",}},
 
 		[T_EVENT.PARALYZER] =		nil,
 		[T_EVENT.STIM_SELF] =		nil,
@@ -2283,6 +2278,7 @@ local DLC_STRINGS =
 		-- [T_EVENT.SELF_STIMMED] =		nil,
 		-- [T_EVENT.STIMMED_BY] =		nil,
 		-- [T_EVENT.AWAKENED_BY] =		nil,
+		[T_EVENT.UNTIE] = 			{T_PROB.p_hostage_rescue, {"Opening conveniently flimsy cuffs is my specialty.","I'm just a guy with a pair of pants.","You want my card?"}},
 		[T_EVENT.RESCUER] = 			{T_PROB.p_rescuer,{"Good to see you too. Let's get hopping!","You've got a bad case of the jailbirds.",}},
 		[T_EVENT.BAD_ESCAPE] = 		{T_PROB.p_badescape,{"I could do with some ketamine.","I could do with bingewatching some TV series.","I could do with a day off.",}},
 		[T_EVENT.GOOD_ESCAPE] = 		{T_PROB.p_goodescape,{"Another job well done.","I hope I get some ugprades!","This might be the break we've been waiting for.","Not bad.","Yay!","Nice. Now to iron my pants.","We can kick back and relax now.","Could go for a coffee. Or an egg cream.","Pushing elevator buttons is my specialty."}},

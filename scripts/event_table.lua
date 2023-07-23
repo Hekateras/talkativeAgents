@@ -16,6 +16,7 @@ local TA_table = {
 		OVERWATCH_MELEE = 28,		-- EV_UNIT_OVERWATCH_MELEE
 		PIN = 111,			-- EV_UNIT_START_PIN -- unused in game --Not anymore -- added by Cyberboy2000 :)
 
+		UNTIE = 36,				-- EV_UNIT_UNTIE
 		SAFE_LOOTED = 66,       	-- TRG_SAFE_LOOTED -- there's trigger used
 		INSTALL_AUGMENT = 62,
 		DISGUISE_IN = 129,		-- for Prism's disguise
@@ -50,9 +51,9 @@ local TA_table = {
 		SAVED_FROM_OW = 2001, -- saved from guard, both currently unused
 		AGENT_DEATH = 1027,
 		OW_INTERVENTION = 1028, -- save someone from a guard who's on OW
-		EVENT_SELECTED = 1029, --now used! fires once per mission per agent
-		EV_RESELECTED = 1031, -- on selected, but used instead of above after rewinding
-		SURRENDER = 73, --for "surrender" ability from New Corporate Tactics. unused simdefs.TRG_LAST_WORDS
+		EVENT_SELECTED = "TA_SELECTED", --now used! fires once per mission per agent
+		EV_RESELECTED = "TA_RESELECTED", -- on selected, but used instead of above after rewinding
+		SURRENDER = "TA_SURRENDER", --for "surrender" ability from New Corporate Tactics. unused simdefs.TRG_LAST_WORDS
 
 		EV_MONSTER_MID2 = 2003, --Monster complains that you steal his gun
 		EV_MONSTER_MID2_ESCORTSFIXED = 2004, --Monster steals his gun back
@@ -92,6 +93,7 @@ local TA_table = {
 		p_ow_saved = 1, --0.8 --unused
 		p_agentdeath = 0.9,
 		p_surrender = 1,
+		p_hostage_rescue = 1,
 
 		-- guard p values
 		p_guard_generic = 0.4,
