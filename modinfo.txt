@@ -3,4 +3,4 @@ name = Talkative Agents
 icon = gui/icons/mod_dlc_banter_icon.png
 
 author = Mobbstar, Shirsh, Cyberboy2000, Hekateras, Linenpixel
-version = 4.0
+version = 4.1
