@@ -2,19 +2,11 @@ local util = include("modules/util")
 local simdefs = include( "sim/simdefs" )
 local cdefs = include( "client_defs" )
 
-local voicedAgents = {} -- to be populated with agentdefs that get debug voice
-
-local QuipsEnabled
--- local hostageEvent = nil
-local quippingagent = nil
-local alreadyModified = false
-local alreadyModified2 = false
-
 local function init( modApi )
 	local scriptPath = modApi:getScriptPath()
 	local dataPath = modApi:getDataPath()
 	
-	include( scriptPath .. "/eventlistener" )
+	include( scriptPath.."/triggers" )
 	
 	modApi.requirements = {"Sim Constructor","No Dialogues (Reworked)","Advanced Corporate Tactics"}	
 	
@@ -47,30 +39,29 @@ local function init( modApi )
 	
 	-- modApi:addGenerationOption("talkative_cameras", STRINGS.alpha_voice.OPTIONS.BURNT_TOAST, STRINGS.alpha_voice.OPTIONS.BURNT_TOAST_TIP, {enabled = true, noUpdate = true} )		
 	-- modApi:addGenerationOption("burnttoast", STRINGS.alpha_voice.OPTIONS.BURNT_TOAST, STRINGS.alpha_voice.OPTIONS.BURNT_TOAST_TIP, {enabled = false, noUpdate = true} )	
-		
 end
 
 
 local function lateInit()
-	
-	-- local basegame = include( "states/state-game" )
-	-- local rewindTurns_old = basegame.rewindTurns
-	-- wrapping this didn't work.
-	
-	local basegame = include( "states/state-game" )
-	local onLoad_old = basegame.onLoad
-	basegame.onLoad = function( self, params, simCore, levelData, simHistory, simHistoryIdx, uiMemento, ... )
-		-- log:write("LOG basegame onload")
-		onLoad_old( self, params, simCore, levelData, simHistory, simHistoryIdx, uiMemento, ... )
-		simCore:getTags().justRewound = nil
-	end	
-	
 	local simactions = include("sim/simactions")
 	local rewindAction_old = simactions.rewindAction
 	simactions.rewindAction = function( sim, rewindsLeft, ... )
-		sim:getTags().justRewound = true
-		-- log:write("LOG basegame rewind")
 		rewindAction_old( sim, rewindsLeft, ... )
+		sim:dispatchEvent( "TA_REWIND", {} )
+	end
+
+	local hud = include( "hud/hud" )
+	local oldSelectUnit = hud.onSelectUnit
+
+	hud.onSelectUnit = function( self, prevUnit, selectedUnit )
+		if self._game and self._game.viz then
+			self._game.viz:processViz( {
+				eventType = simdefs.TA_EVENT_TABLE.EVENTS.EVENT_SELECTED,
+				eventData = { unit = selectedUnit }
+			} )
+		end
+		
+		return oldSelectUnit( self, prevUnit, selectedUnit )
 	end
 	
 	--This keeps the "I got hit" oneliners from following the final words and ruining the dramatic impact
@@ -82,71 +73,20 @@ local function lateInit()
 		lastWords_executeAbility_old( self, sim, sourceUnit, ... )
 	end
 	
-	-- some blatant hijacking of script event queue stuff to remove clunky delays for hostages and agent rescues
-	
-	local mission_panel = require "hud/mission_panel"
-	local oldProcessEvent = mission_panel.processEvent
-	mission_panel.processEvent = function(self, event)
+	if abilitydefs._abilities.surrender then --from Advanced Corporate Tactics
+		local surrender_executeAbility_old = abilitydefs._abilities.surrender.executeAbility
 
-		while self._hud._choice_dialog ~= nil do
-			-- A dialog is open, which may not be skippable.
-			-- Pause the queue until that dialog has been closed.
-			self:yield()
+		abilitydefs._abilities.surrender.executeAbility = function(self, sim, unit, userUnit, target, ... )
+
+			local targetUnit = sim:getUnit(target)
+			-- local script = sim:getLevelScript()
+			local delay_time = 2.5
+			sim:dispatchEvent( simdefs.TA_EVENT_TABLE.EVENTS.SURRENDER, {unit = targetUnit} )  --insert trigger so alpha_voice can detect it
+			sim:dispatchEvent( simdefs.EV_WAIT_DELAY, delay_time * cdefs.SECONDS )
+			-- script:queue( delay_time*cdefs.SECONDS )
+			surrender_executeAbility_old(self, sim, unit, userUnit, target, ... ) --run default function as normal
+
 		end
-	
-		local agentHireTexts = {}
-		local agents = include("sim/unitdefs/agentdefs")
-		for i, agentdef in pairs(agents) do
-			if agentdef.hireText then 
-				agentHireTexts[agentdef.hireText] = true
-			end
-		end
-		
-		-- log:write("LOG event")
-		-- log:write(util.stringize(event,4))
-		if QuipsEnabled and type(event) == "table" and event.type == "newOperatorMessage" then
-			if event.script then
-				if event.script[1].text == STRINGS.MISSIONS.ESCAPE.OPERATOR_HOSTAGE_CONVO1 and (event.script[1].donotskip == nil) then
-				-- donotskip is a special flag for the manual re-adding of Central's line
-
-					-- hostageEvent = event
-					self._skipping = nil
-					-- remove Central's comment and manually re-add it in alpha_voice, independent of agent oneliner
-					-- technically, this will make Central's line not show up at all in the hypothetical event that you have a non-agent who doesn't have the voice ability rescue the hostage, but........ \o/
-				else
-				
-					oldProcessEvent( self, event )
-
-				end
-			
-				
-			else
-				oldProcessEvent( self, event )
-			end
-
-		else
-			if type(event) == "table" and (event.type == "enemyMessage" or event.type == "modalConversation") then
-				-- log:write("LOG enemy message")
-				-- log:write(util.stringize(event,2))
-				
-				local rescuedline = false
-				
-				if event.body and agentHireTexts[event.body] then
-				local queueLine = self._hud._game.simCore:getLevelScript():getQueue()
-				if type(queueLine[1]) == "number" and queueLine[1] == 480 then
-					queueLine[1] = 240 --get the next entry in the script queue which should be an 8 second delay after the hireText script. changes 8 second delay to 4 second
-				end
-				-- log:write("LOG queue")
-				-- log:write(util.stringize(queueLine,3))
-				end
-						
-			end
-			
-			oldProcessEvent( self, event )
-			
-		end
-		
-	
 	end
 	
 	------------ LOCATION-SPECIFIC LINE SUPPORT
@@ -174,6 +114,14 @@ local function lateInit()
 	local lastWords_execute_old = lastWords.executeAbility
 	lastWords.executeAbility = function( self, sim, sourceUnit, ... )
 		sim:getTags().TA_getSpeechFlag_FINAL = true -- flag for simunit:getSpeech
+		
+		if sourceUnit and sourceUnit:getUnitData().agentID == "mod_goose" then --Goose mod integration
+			local goose = sourceUnit
+			local sound = "goose/goosesfx/honk"
+			local x0, y0 = goose:getLocation()
+			sim:emitSound( { path = sound, range = 7 }, x0, y0, nil )
+		end
+		
 		lastWords_execute_old( self, sim, sourceUnit, ... )
 		sim:getTags().TA_getSpeechFlag_FINAL = nil
 	end
@@ -245,13 +193,11 @@ local function lateInit()
 		end
 	
 		return simunit_getspeech_old( self, ... )
-	end	
-		
+	end
 end
 
 local function load(modApi, options, params)
 	local scriptPath = modApi:getScriptPath()
-	modApi:addAbilityDef( "alpha_voice", scriptPath .."/alpha_voice" )
 	if options["chattyguards"] and options["chattyguards"].enabled and params then
 		params.chattyguards = true
 	end
@@ -259,6 +205,15 @@ local function load(modApi, options, params)
 		params.chattyAlertedGuards = true
 		params.talkativeagents_multiplier = 1
 	end
+	
+	if options["alpha_voice"].enabled then
+		local handlers = include( scriptPath .. "/event_functions" )
+		
+		for evType, fn in pairs( handlers ) do
+			modApi:addVizEvHandler( evType, fn )
+		end
+	end
+	
 	------ deprecated
 	-- if options["chattyAlertedGuards"] and options["chattyAlertedGuards"].enabled and params then
 		-- params.chattyAlertedGuards = true
@@ -276,42 +231,8 @@ local function load(modApi, options, params)
 		-- params.burnttoast = options["burnttoast"].value
 	-- end
 	
-	local abilitydefs = include( "sim/abilitydefs" )
-	local lastWords = abilitydefs._abilities.lastWords --Goose mod integration
-	local lastWords_executeOld = lastWords.executeAbility
-	if not alreadyModified then
-		lastWords.executeAbility = function( self, sim, sourceUnit, ...)
-			-- log:write("log modifying final honk")
-			if sourceUnit and sourceUnit:getUnitData().agentID == "mod_goose" then
-				local goose = sourceUnit
-				local sound = "goose/goosesfx/honk"
-				local x0, y0 = goose:getLocation()
-				sim:emitSound( { path = sound, range = 7 }, x0, y0, nil )
-			end
-			lastWords_executeOld(self, sim, sourceUnit, ...)
-		end
-		alreadyModified = true
-	end
-	
 	-- log:write("LOG abilitydefs")
 	-- log:write(util.stringize(abilitydefs._abilities.surrender,2))
-	if abilitydefs._abilities.surrender and not alreadyModified2 then --from Advanced Corporate Tactics
-		local surrender_executeAbility_old = abilitydefs._abilities.surrender.executeAbility
-
-		abilitydefs._abilities.surrender.executeAbility = function(self, sim, unit, userUnit, target, ... )
-
-			local targetUnit = sim:getUnit(target)
-			-- local script = sim:getLevelScript()
-			local delay_time = 2.5
-			sim:triggerEvent(simdefs.TRG_LAST_WORDS, {unit = targetUnit} )  --insert trigger so alpha_voice can detect it
-			sim:dispatchEvent( simdefs.EV_WAIT_DELAY, delay_time * cdefs.SECONDS )
-			-- script:queue( delay_time*cdefs.SECONDS )
-			surrender_executeAbility_old(self, sim, unit, userUnit, target, ... ) --run default function as normal
-
-		end
-		alreadyModified2 = true
-	end
-	
 end
 
 local function initStrings(modApi)
@@ -326,54 +247,15 @@ local function initStrings(modApi)
  	modApi:addStrings( dataPath, "alpha_voice", DLC_STRINGS )
 end
 
-local function addAbilityToDef(id,def)
-	if def.abilities and voicedAgents[id] == nil then
-		voicedAgents[id] = def
-		table.insert(def.abilities, "alpha_voice")
-	end
-end
-
-local function unload()
-	--take away debug voices
-	for id, def in pairs(voicedAgents) do
-		for i, v in ipairs(def.abilities) do
-			if v == "alpha_voice" then
-				table.remove(def.abilities, i)
-				break
-			end
-		end
-	end
-	voicedAgents = {}
-	QuipsEnabled = false
-	alreadyModified = false
-	alreadyModified2 = false
-end
-
 local function lateLoad(modApi, options, params, allOptions)
 	if options["alpha_voice"].enabled then
-		local agents = include( "sim/unitdefs/agentdefs" )
-		for k,v in pairs(agents) do
-			--debug give everybody the voice ability
-			addAbilityToDef(k,v)
+		local agentdefs = include("sim/unitdefs/agentdefs")
+		local LOCATION_STRINGS = STRINGS.alpha_voice.LOCATION_STRINGS
+		for i, agent in pairs(agentdefs) do
+			if agent.speech and agent.agentID and LOCATION_STRINGS[agent.agentID] then
+				agent.speech.LOCATION_SPECIFIC = LOCATION_STRINGS[agent.agentID]
+			end
 		end
-
-		local guards = include( "sim/unitdefs/guarddefs" )
-		for k,v in pairs(guards) do
-			--debug give everybody the voice ability
-			-- addAbilityToDef(k,v)
-		end
-	QuipsEnabled = true
-	
-	local agentdefs = include("sim/unitdefs/agentdefs")
-	local LOCATION_STRINGS = STRINGS.alpha_voice.LOCATION_STRINGS
-	for i, agent in pairs(agentdefs) do
-		if agent.speech and agent.agentID and LOCATION_STRINGS[agent.agentID] then
-			agent.speech.LOCATION_SPECIFIC = LOCATION_STRINGS[agent.agentID]
-		end
-	end	
-	
-	else
-		unload()
 	end
 end
 
@@ -382,6 +264,5 @@ return {
 	lateInit = lateInit,
     load = load,
 	lateLoad = lateLoad,
-	unload = unload,
     initStrings = initStrings,
 }
